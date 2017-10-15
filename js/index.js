@@ -57,3 +57,52 @@ function openNav() {
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
+
+Storage.prototype.setObj = function(key, obj) {
+    return this.setItem(key, JSON.stringify(obj))
+}
+Storage.prototype.getObj = function(key) {
+    return JSON.parse(this.getItem(key))
+}
+
+function addItem(category, item) {
+     var data;
+     if(localStorage.getObj(category) == null) {
+          data = [];
+     }
+     else {
+          data = localStorage.getObj(category);
+     }
+     data.push(item);
+     localStorage.setObj(category, data);
+}
+
+function removeItem(category, item) {
+     var data;
+     if(localStorage.getObj(category) == null) {
+          return false;
+     }
+     else {
+          data = localStorage.getObj(category);
+     }
+
+     var index = data.indexOf(item);
+
+     if(index > -1) {
+          data.splice(index, 1);
+          return true;
+     }
+
+     return false;
+}
+
+function displayItems(category) {
+     var items = [];
+     if(localStorage.getObj(category) != null) {
+          items = localStorage.getObj(category);
+          var index = items.length();
+          for(i = 0;i < index; i++) {
+               document.getElementById("items").children[0].innerHTML += "<TEMPTAG>"+items[i]+"</TEMPTAG>";
+          }
+     }
+}
